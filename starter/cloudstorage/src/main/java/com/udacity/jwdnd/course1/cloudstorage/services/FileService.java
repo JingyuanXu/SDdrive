@@ -1,8 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage.services;
 
+import com.udacity.jwdnd.course1.cloudstorage.entity.FileAbstract;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Files;
+import com.udacity.jwdnd.course1.cloudstorage.model.Notes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FileService {
+public class FileService implements FileAbstract {
     @Autowired
     private FileMapper fileMapper;
     @Autowired
@@ -22,8 +24,8 @@ public class FileService {
         this.fileMapper = fileMapper;
         this.userMapper = userMapper;
     }
-    public String[] getFileByUser(Integer userId) {
-        return fileMapper.getFileByUser(userId);
+    public List<Files> getFileListByUser(Integer userId) {
+        return fileMapper.getFileListByUser(userId);
     }
 
 
@@ -32,7 +34,7 @@ public class FileService {
             String fileName = multipart.getOriginalFilename();
             String contentType = multipart.getContentType();
             String fileSize = String.valueOf(multipart.getSize());
-            Integer userId = userMapper.getUserName(userName).getUserId();
+            Integer userId = userMapper.getUserByName(userName).getUserId();
 
             BufferedReader br;
             List<String> result = new ArrayList<>();

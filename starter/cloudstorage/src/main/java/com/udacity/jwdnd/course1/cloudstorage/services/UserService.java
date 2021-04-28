@@ -1,13 +1,15 @@
 package com.udacity.jwdnd.course1.cloudstorage.services;
 
+import com.udacity.jwdnd.course1.cloudstorage.entity.UserAbstract;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.Base64;
-
-public class UserService {
+@Service
+public class UserService implements UserAbstract {
 
     @Autowired
     private UserMapper userMapper;
@@ -17,6 +19,13 @@ public class UserService {
     public UserService(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
+
+    public User getUserByName(String username) {
+        return userMapper.getUserByName(username);
+    }
+
+
+
     public int createUser(User user) {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
