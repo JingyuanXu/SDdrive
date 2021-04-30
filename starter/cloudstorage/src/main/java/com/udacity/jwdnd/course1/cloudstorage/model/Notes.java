@@ -5,13 +5,9 @@ import lombok.Data;
 
 @Data
 public class Notes {
-    @JsonProperty("noteid")
     private Integer noteId;
-    @JsonProperty("notetitle")
     private String noteTitle;
-    @JsonProperty("notedescription")
     private String noteDescription;
-    @JsonProperty("userid")
     private Integer userId;
 
     public Notes(Integer noteId, String noteTitle, String noteDescription, Integer userId) {

@@ -11,5 +11,5 @@ public interface FileAbstract {
     public List<Files> getFileListByUser(Integer userId);
     public void addFile(MultipartFile multipart, String userName);
     public Files getFile(String fileName);
-    public void deleteFile(String fileName);
+    public Integer deleteFile(Integer fileName);
 }

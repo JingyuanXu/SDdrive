@@ -7,6 +7,8 @@ import com.udacity.jwdnd.course1.cloudstorage.model.Notes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NoteService implements NoteAbstract {
     @Autowired
@@ -18,20 +20,24 @@ public class NoteService implements NoteAbstract {
         this.userMapper = userMapper;
         this.noteMapper = noteMapper;
     }
-    public void addNote(String title, String description, String userName) {
-        Integer userId = userMapper.getUserByName(userName).getUserId();
-        Notes note = new Notes(0, title, description, userId);
-        noteMapper.createNotes(note);
+    @Override
+    public int addNote(Notes note) {
+        return noteMapper.createNotes(note);
     }
-
-    public Notes[] getNotesByUser(Integer userId) {
+    @Override
+    public List<Notes> getNotesByUser(Integer userId) {
         return noteMapper.getNotesByUser(userId);
     }
+    @Override
+    public void updateNote(Notes note) {
+        noteMapper.updateNote(note);
 
+    }
+    @Override
     public Notes getNote(Integer noteId) {
         return noteMapper.getNote(noteId);
     }
-
+    @Override
     public void deleteNote(Integer noteId) {
         noteMapper.deleteNote(noteId);
     }

@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.entity.CredentialAbstract;
 import com.udacity.jwdnd.course1.cloudstorage.entity.FileAbstract;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
@@ -21,15 +22,15 @@ public class HomeController {
     @Autowired
     private NoteService noteService;
     @Autowired
-    private CredentialService credentialService;
+    private CredentialAbstract credentialAbstract;
     @Autowired
     private EncryptionService encryptionService;
 
-    public HomeController(FileAbstract fileAbstract, UserService userService, NoteService noteService, CredentialService credentialService, EncryptionService encryptionService) {
+    public HomeController(FileAbstract fileAbstract, UserService userService, NoteService noteService, CredentialAbstract credentialAbstract, EncryptionService encryptionService) {
         this.fileAbstract = fileAbstract;
         this.userService = userService;
         this.noteService = noteService;
-        this.credentialService = credentialService;
+        this.credentialAbstract = credentialAbstract;
         this.encryptionService = encryptionService;
     }
 
@@ -44,7 +45,7 @@ public class HomeController {
             int userId = user.getUserId();
             model.addAttribute("fileslist", fileAbstract.getFileListByUser(userId));
             model.addAttribute("noteslist", noteService.getNotesByUser(userId));
-            model.addAttribute("credentialslist", credentialService.getCredentialByUserId(userId));
+            model.addAttribute("credentialslist", credentialAbstract.getCredentialByUserId(userId));
             model.addAttribute("encryptionService", encryptionService);
             return "home";
         }

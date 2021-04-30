@@ -28,7 +28,7 @@ public class FileService implements FileAbstract {
         return fileMapper.getFileListByUser(userId);
     }
 
-
+    @Override
     public void addFile(MultipartFile multipart, String userName) {
         try {
             String fileName = multipart.getOriginalFilename();
@@ -63,8 +63,9 @@ public class FileService implements FileAbstract {
         return fileMapper.getFileByName(fileName);
     }
 
-    public void deleteFile(String fileName) {
-        fileMapper.deleteFile(fileName);
+    @Override
+    public Integer deleteFile(Integer fileId) {
+        return fileMapper.deleteFile(fileId);
     }
 
 }

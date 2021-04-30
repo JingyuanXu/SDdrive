@@ -5,21 +5,15 @@ import lombok.Data;
 
 @Data
 public class Credential {
-    @JsonProperty("credentialid")
-    private Integer credentialid;
-    @JsonProperty("url")
+    private Integer credentialId;
     private String url;
-    @JsonProperty("username")
     private String userName;
-    @JsonProperty("key")
     private String key;
-    @JsonProperty("password")
     private String password;
-    @JsonProperty("userid")
     private Integer userid;
 
-    public Credential(Integer credentialid, String url, String userName, String key, String password, Integer userid) {
-        this.credentialid = credentialid;
+    public Credential(Integer credentialId, String url, String userName, String key, String password, Integer userid) {
+        this.credentialId = credentialId;
         this.url = url;
         this.userName = userName;
         this.key = key;
