@@ -51,7 +51,6 @@ public class CredentialController {
                 String username = authentication.getName();
                 int userId = userService.getUserByName(username).getUserId();
                 credential.setUserid(userId);
-                credential.setUserName(username);
                 credentialAbstract.addCredential(credential);
                 redirectAttributes.addFlashAttribute("successMessage", "Added one credential");
                 return "redirect:/home";

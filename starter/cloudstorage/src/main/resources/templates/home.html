@@ -180,7 +180,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Username</label>
-                                        <input   type="text" name= "username" class="form-control" id="credential-username" maxlength="30" required>
+                                        <input   type="text" name= "userName" class="form-control" id="credential-username" maxlength="30" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Password</label>
@@ -240,7 +240,7 @@
     function showCredentialModal(credential, decryptedPassword) {
         $('#credential-id').val(credential && credential.credentialId ? credential.credentialId : 0);
         $('#credential-url').val(credential && credential.url ? credential.url : '');
-        $('#credential-username').val(credential && credential.username ? credential.username : '');
+        $('#credential-username').val(credential && credential.userName ? credential.userName : '');
         $('#credential-password').val(credential && credential.decryptedPassword ? credential.decryptedPassword : decryptedPassword);
         $('#credentialModal').modal('show');
     }
