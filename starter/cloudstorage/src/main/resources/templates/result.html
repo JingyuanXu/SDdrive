@@ -22,10 +22,8 @@
             <span>Click <a th:href="@{/home}">here</a> to continue.</span>
             <div th:if="${file}">
                 <h1 class="display-5" >File details</h1>
-                <p>File name: <span th:text="${file.getFileName}">Example Error Message</span></p>
-                <p>File type: <span th:text="${file.getContentType}">Type not available</span></p>
-                <p>File size: <span th:text="${file.getFileSize}">Size not available</span></p>
-                <p><a th:href="@{|/file/download/${file.getFileName}|}">Download</a></p>
+                <p>File name: <span th:text="${file.getFileName()}">File not found.</span></p>p>
+                <p><a th:href="@{|/file/download/${file.getFileName()}|}">Download the file</a></p>
             </div>
         </div>
     </body>

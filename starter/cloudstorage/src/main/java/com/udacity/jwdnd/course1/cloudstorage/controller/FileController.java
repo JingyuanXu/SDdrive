@@ -1,10 +1,15 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.entity.FileAbstract;
+import com.udacity.jwdnd.course1.cloudstorage.model.Files;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +25,7 @@ import java.io.IOException;
 @RequestMapping("/file")
 public class FileController {
     @Autowired
-    private FileService fileService;
+    private FileAbstract fileAbstract;
 
     @Autowired
     private UserService userService;
@@ -40,12 +45,12 @@ public class FileController {
                 redirectAttributes.addFlashAttribute("errorMessage","The file size is over 10000000");
                 return "redirect:/home";
             }
-            if(fileService.getFile(file.getOriginalFilename()) != null){
+            if(fileAbstract.getFile(file.getOriginalFilename()) != null){
                 redirectAttributes.addFlashAttribute("errorMessage","The file exist. ");
                 return "redirect:/home";
             }
 
-            fileService.addFile(file,userName);
+            fileAbstract.addFile(file,userName);
             return "redirect:/home" ;
         }
         redirectAttributes.addFlashAttribute("errorMessage","No file");
@@ -55,14 +60,28 @@ public class FileController {
     @GetMapping("/{name}")
     public String getFile(@PathVariable String name, Model model){
 
-        model.addAttribute("file",fileService.getFile(name));
+        model.addAttribute("file",fileAbstract.getFile(name));
         return "result";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteFile(@PathVariable int id, Model model){
-        model.addAttribute("successMessage",fileService.deleteFile(id));
+        model.addAttribute("successMessage",fileAbstract.deleteFile(id));
         return "result";
+    }
+
+    @GetMapping("/download/{name}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String name) throws Exception {
+        try {
+            Files file = fileAbstract.getFile(name);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(file.getContentType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+                    .body(new ByteArrayResource(file.getFileData()));
+        }
+        catch(Exception e) {
+            throw new Exception("Error downloading file");
+        }
     }
 
 }

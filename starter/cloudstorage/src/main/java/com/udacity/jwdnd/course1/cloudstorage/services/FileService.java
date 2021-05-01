@@ -6,10 +6,14 @@ import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Files;
 import com.udacity.jwdnd.course1.cloudstorage.model.Notes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +23,7 @@ public class FileService implements FileAbstract {
     private FileMapper fileMapper;
     @Autowired
     private UserMapper userMapper;
-
+    private Path filePath;
     public FileService(FileMapper fileMapper, UserMapper userMapper) {
         this.fileMapper = fileMapper;
         this.userMapper = userMapper;
