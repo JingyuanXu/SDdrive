@@ -62,7 +62,6 @@ public class WorkFlowTest {
     }
 
     private void signupUser() {
-
         this.driver.get("http://localhost:" + this.port + "/signup");
 
         WebElement inputFirstName = this.driver.findElement(By.id("inputFirstName"));
@@ -88,21 +87,118 @@ public class WorkFlowTest {
 
     private void logout() {
         this.driver.get("http://localhost:" + this.port + "/home");
+
         WebElement logoutButton = driver.findElement(By.id("logoutBtn"));
+
         logoutButton.click();
     }
 
+    private void deleteNote() {
+        this.driver.get("http://localhost:" + this.port + "/home");
+
+        WebElement notesTab = this.driver.findElement(By.id("nav-notes-tab"));
+
+        notesTab.click();
+
+        WebElement deleteBtn = this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[1]/a"));
+
+        this.wait.until(ExpectedConditions.elementToBeClickable(deleteBtn));
+
+        deleteBtn.click();
+    }
+
+    private void updateNote() {
+        this.driver.get("http://localhost:" + this.port + "/home");
+
+        WebElement notesTab = this.driver.findElement(By.id("nav-notes-tab"));
+
+        notesTab.click();
+
+        WebElement updateBtn = this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[1]/button"));
+
+        this.wait.until(ExpectedConditions.elementToBeClickable(updateBtn));
+
+        updateBtn.click();
+
+        WebElement noteTitle = this.driver.findElement(By.id("note-title"));
+
+        this.wait.until(ExpectedConditions.visibilityOf(noteTitle));
+
+        noteTitle.sendKeys("s");
+
+        WebElement noteDescription = this.driver.findElement(By.id("note-description"));
+
+        noteDescription.sendKeys("sss");
+
+        WebElement saveNote = this.driver.findElement(By.id("saveNote"));
+
+        saveNote.click();
+    }
+
+    private void insertNewNote() throws InterruptedException {
+        this.driver.get("http://localhost:" + this.port + "/home");
+
+        WebElement notesTab = this.driver.findElement(By.id("nav-notes-tab"));
+
+        notesTab.click();
+
+        this.wait.until(ExpectedConditions.elementToBeClickable(By.id("note-creation-btn")));
+
+        WebElement noteCreationBtn = driver.findElement(By.id("note-creation-btn"));
+
+        noteCreationBtn.click();
+
+        WebElement noteTitle = this.driver.findElement(By.id("note-title"));
+
+        this.wait.until(ExpectedConditions.visibilityOf(noteTitle));
+
+        noteTitle.sendKeys("t");
+
+        WebElement noteDescription = this.driver.findElement(By.id("note-description"));
+
+        noteDescription.sendKeys("ttt");
+
+        WebElement saveNote = this.driver.findElement(By.id("saveNote"));
+
+        saveNote.click();
+
+    }
     @Test
     @Order(1)
     public void signUpLoginLogOut() {
         this.signupUser();
+
         Assertions.assertEquals("Login", driver.getTitle());
+
         this.loginUser();
+
         Assertions.assertEquals("Home", driver.getTitle());
+
         this.logout();
+
         Assertions.assertEquals("Login", driver.getTitle());
 
     }
+    @Test
+    @Order(2)
+    public void NotesOperation() throws InterruptedException {
+        this.signupUser();
+
+        this.loginUser();
+
+        this.insertNewNote();
+        Assertions.assertDoesNotThrow(() -> {
+            this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/th"));
+            this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[2]"));
+        });
+        this.updateNote();
+        Assertions.assertDoesNotThrow(() -> {
+            this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/th"));
+            this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[2]"));
+        });
+        this.deleteNote();
+    }
+
 
 
 }
