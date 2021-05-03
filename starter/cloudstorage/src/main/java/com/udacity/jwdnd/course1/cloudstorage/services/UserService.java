@@ -19,13 +19,17 @@ public class UserService implements UserAbstract {
     public UserService(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
-
+    @Override
     public User getUserByName(String username) {
         return userMapper.getUserByName(username);
     }
 
+    @Override
+    public boolean isUserExist(String usename){
+        return userMapper.getUserByName(usename) == null;
+    }
 
-
+    @Override
     public int createUser(User user) {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];

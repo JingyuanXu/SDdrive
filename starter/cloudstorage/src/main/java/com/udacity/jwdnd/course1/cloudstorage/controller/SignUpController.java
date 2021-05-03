@@ -31,9 +31,11 @@ public class SignUpController {
 
     @PostMapping
     public String signupUser(@ModelAttribute User user, RedirectAttributes redirectAttributes){
-        userService.createUser(user);
-        redirectAttributes.addFlashAttribute("signupSuccess", true);
-        redirectAttributes.addFlashAttribute("successMessage", "Account have been created. Please login to continue");
-        return "redirect:/login";
+        if(userService.isUserExist(user.getUsername())) {
+            userService.createUser(user);
+            redirectAttributes.addFlashAttribute("successMessage", "Account have been created.");
+            return "redirect:/login";
+        }
+        return null;
     }
 }

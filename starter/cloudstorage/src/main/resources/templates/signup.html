@@ -13,15 +13,8 @@
             <div class="form-group">
                 <label><a th:href="@{/login}" >Back to Login</a></label>
             </div>
-
             <h1 class="display-5">Sign Up</h1>
             <form action="#" th:action="@{/signup}" method="POST" id = "signUpForm">
-                <div th:if="${signupSuccess}" class="alert alert-dark">
-                    You successfully signed up! Please continue to the <a th:href="@{/login}" id = "to-login-page">login</a> page.
-                </div>
-                <div th:if="${signupError}" class="alert alert-danger">
-                    <span th:text="${signupError}">Sign up failed! Please try again.</span>
-                </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputFirstName">First Name</label>
