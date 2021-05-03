@@ -91,6 +91,8 @@ public class WorkFlowTest {
         WebElement logoutButton = driver.findElement(By.id("logoutBtn"));
 
         logoutButton.click();
+
+        this.driver.get("http://localhost:" + this.port + "/home");
     }
 
     private void deleteNote() {
@@ -166,17 +168,26 @@ public class WorkFlowTest {
     @Test
     @Order(1)
     public void signUpLoginLogOut() {
+        /*the home page is not accessible without logging in*/
+        this.driver.get("http://localhost:" + this.port + "/home");
+
+        Assertions.assertEquals("Login", driver.getTitle());
+
+        /* test that signs up a new user*/
         this.signupUser();
 
         Assertions.assertEquals("Login", driver.getTitle());
 
+        /*logs that user in, and they can access the home page*/
         this.loginUser();
 
         Assertions.assertEquals("Home", driver.getTitle());
 
+        /*logs out and the home page is no longer accessible*/
         this.logout();
 
         Assertions.assertEquals("Login", driver.getTitle());
+
 
     }
     @Test
@@ -185,18 +196,26 @@ public class WorkFlowTest {
         this.signupUser();
 
         this.loginUser();
-
+        /*logs in an existing user, creates a note and  the note details are visible in the note list*/
         this.insertNewNote();
         Assertions.assertDoesNotThrow(() -> {
             this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/th"));
             this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[2]"));
         });
+
+        /* clicks the edit note button on an existing note, changes the note data, saves the changes*/
         this.updateNote();
         Assertions.assertDoesNotThrow(() -> {
             this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/th"));
             this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[2]"));
         });
+
+        /*clicks the delete note button on an existing note*/
         this.deleteNote();
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/th"));
+            this.driver.findElement(By.xpath("//*[@id=\"userTable\"]/tbody/tr/td[2]"));
+        });
     }
 
 
